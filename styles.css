@@ -430,20 +430,33 @@
   
   /* Slider Carousel */
   .carousel {
+    height: 500px;
     position: relative;
     overflow: hidden;
-    margin: 40px 0;
   }
   
   .carousel-container {
     display: flex;
-    transition: transform 0.5s ease;
+    transition: transform 0.2s ease;
+    height: 100%;
   }
   
   .carousel-slide {
+    flex: 0 0 100%;
+    height: 100%;
+    position: relative;
+  }
+  .carousel-slide a {
+    display: block;
     width: 100%;
     height: 100%;
-
+  }
+  
+  .carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
   }
   
   .carousel-buttons {
@@ -459,7 +472,7 @@
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(3, 73, 18, 0.5);
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
@@ -732,3 +745,71 @@
       flex-basis: 100%;
     }
   }
+
+   /* Additional styles for cart functionality for interaction with customer and system*/
+   .quantity-selector {
+    display: none;
+    margin: 15px 0;
+}
+
+.quantity-selector.active {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-selector input {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.confirmation-prompt {
+    display: none;
+    margin-top: 10px;
+}
+
+.confirmation-prompt.active {
+    display: block;
+}
+
+.confirmation-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-btn {
+    background: var(--light-green);
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*animation container for plant*/
+.animation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  background-color: #f4f1eb;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.1);
+}
+
+canvas {
+  display: block;
+  background-color:  #f4f1eb;
+}

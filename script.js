@@ -244,107 +244,206 @@ document.addEventListener('DOMContentLoaded', function() {
       return regex.test(email);
     }
   }
-  
-  // Growing plant animation
+
+  //Plant animation//
   class GrowingPlant {
     constructor(canvas) {
-      this.canvas = canvas;
-      this.ctx = canvas.getContext('2d');
-      this.width = canvas.width;
-      this.height = canvas.height;
-      this.stemHeight = 0;
-      this.maxStemHeight = this.height * 0.7;
-      this.stemWidth = 5;
-      this.leafSize = 0;
-      this.maxLeafSize = 30;
-      this.growthSpeed = 0.5;
-      this.animate = this.animate.bind(this);
-      
-      this.init();
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.width = canvas.width;
+        this.height = canvas.height;
+
+        // Growth parameters
+        this.stemHeight = 0;
+        this.maxStemHeight = this.height * 0.7;
+        this.stemWidth = 6;
+        this.leafSize = 0;
+        this.maxLeafSize = 35;
+        this.petalSize = 0;
+        this.maxPetalSize = 20;
+        this.flowerBloom = false;
+        this.growthSpeed = 0.7;
+        this.animate = this.animate.bind(this);
+
+        this.init();
     }
-    
+
     init() {
-      this.animate();
+        this.animate();
     }
-    
+
     draw() {
-      // Clear canvas
-      this.ctx.clearRect(0, 0, this.width, this.height);
-      
-      // Draw stem
-      this.ctx.beginPath();
-      this.ctx.moveTo(this.width / 2, this.height);
-      this.ctx.lineTo(this.width / 2, this.height - this.stemHeight);
-      this.ctx.lineWidth = this.stemWidth;
-      this.ctx.strokeStyle = '#4a7c59';
-      this.ctx.stroke();
-      
-      // Draw leaves if stem is tall enough
-      if (this.stemHeight > this.maxStemHeight * 0.3) {
-        // Left leaf
+        this.ctx.clearRect(0, 0, this.width, this.height);
+
+        // Draw stem
         this.ctx.beginPath();
-        this.ctx.ellipse(
-          this.width / 2 - 15, 
-          this.height - this.stemHeight * 0.5, 
-          this.leafSize, this.leafSize / 2, 
-          Math.PI / 4, 0, 2 * Math.PI
-        );
-        this.ctx.fillStyle = '#8cb369';
-        this.ctx.fill();
-        
-        // Right leaf
-        this.ctx.beginPath();
-        this.ctx.ellipse(
-          this.width / 2 + 15, 
-          this.height - this.stemHeight * 0.6, 
-          this.leafSize, this.leafSize / 2, 
-          -Math.PI / 4, 0, 2 * Math.PI
-        );
-        this.ctx.fillStyle = '#8cb369';
-        this.ctx.fill();
-      }
-      
-      // Draw flower if plant is fully grown
-      if (this.stemHeight >= this.maxStemHeight) {
-        this.ctx.beginPath();
-        this.ctx.arc(
-          this.width / 2, 
-          this.height - this.stemHeight, 
-          15, 0, 2 * Math.PI
-        );
-        this.ctx.fillStyle = '#f4a259';
-        this.ctx.fill();
-        
+        this.ctx.moveTo(this.width / 2, this.height);
+        this.ctx.lineTo(this.width / 2, this.height - this.stemHeight);
+        this.ctx.lineWidth = this.stemWidth;
+        this.ctx.strokeStyle = '#4a7c59';
+        this.ctx.lineCap = "round";
+        this.ctx.stroke();
+
+        // Draw leaves
+        if (this.stemHeight > this.maxStemHeight * 0.3) {
+            this.ctx.fillStyle = "#8cb369";
+
+            // Left leaf
+            this.ctx.beginPath();
+            this.ctx.ellipse(
+                this.width / 2 - 18, 
+                this.height - this.stemHeight * 0.5, 
+                this.leafSize, this.leafSize / 2, 
+                Math.PI / 4, 0, 2 * Math.PI
+            );
+            this.ctx.fill();
+
+            // Right leaf
+            this.ctx.beginPath();
+            this.ctx.ellipse(
+                this.width / 2 + 18, 
+                this.height - this.stemHeight * 0.6, 
+                this.leafSize, this.leafSize / 2, 
+                -Math.PI / 4, 0, 2 * Math.PI
+            );
+            this.ctx.fill();
+        }
+
+        // Draw flower with petals
+        if (this.stemHeight >= this.maxStemHeight) {
+            this.drawFlower();
+        }
+    }
+
+    drawFlower() {
+        const x = this.width / 2;
+        const y = this.height - this.stemHeight;
+
+        // Draw multiple petals
+        for (let i = 0; i < 6; i++) {
+            const angle = (Math.PI / 3) * i;
+            const petalX = x + Math.cos(angle) * this.petalSize;
+            const petalY = y + Math.sin(angle) * this.petalSize;
+
+            this.ctx.beginPath();
+            this.ctx.ellipse(petalX, petalY, this.petalSize, this.petalSize / 2, angle, 0, Math.PI * 2);
+            this.ctx.fillStyle = "#ff5f6d"; // Pink petals
+            this.ctx.fill();
+        }
+
         // Flower center
         this.ctx.beginPath();
-        this.ctx.arc(
-          this.width / 2, 
-          this.height - this.stemHeight, 
-          5, 0, 2 * Math.PI
-        );
-        this.ctx.fillStyle = '#8d6346';
+        this.ctx.arc(x, y, 8, 0, Math.PI * 2);
+        this.ctx.fillStyle = "#ffd700"; // Yellow center
         this.ctx.fill();
-      }
     }
-    
+
     animate() {
-      if (this.stemHeight < this.maxStemHeight) {
-        this.stemHeight += this.growthSpeed;
-      }
-      
-      if (this.stemHeight > this.maxStemHeight * 0.3 && this.leafSize < this.maxLeafSize) {
-        this.leafSize += this.growthSpeed * 0.5;
-      }
-      
-      this.draw();
-      requestAnimationFrame(this.animate);
+        if (this.stemHeight < this.maxStemHeight) {
+            this.stemHeight += this.growthSpeed;
+        }
+
+        if (this.stemHeight > this.maxStemHeight * 0.3 && this.leafSize < this.maxLeafSize) {
+            this.leafSize += this.growthSpeed * 0.6;
+        }
+
+        if (this.stemHeight >= this.maxStemHeight && this.petalSize < this.maxPetalSize) {
+            this.petalSize += this.growthSpeed * 0.5;
+        }
+
+        this.draw();
+        requestAnimationFrame(this.animate);
     }
-  }
-  
-  // Initialize growing plants on canvases
-  const plantCanvases = document.querySelectorAll('.growing-plant-canvas');
-  if (plantCanvases.length > 0) {
-    plantCanvases.forEach(canvas => {
-      new GrowingPlant(canvas);
+}
+
+// Initialize growing plant animation
+document.addEventListener("DOMContentLoaded", () => {
+    const canvas = document.querySelector('.growing-plant-canvas');
+    if (canvas) {
+        new GrowingPlant(canvas);
+    }
+});
+
+  //add to cart interaction//
+
+  const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+      
+  // Add event listener to each button
+  addToCartButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Get the parent card element
+      const card = this.closest('.plant-card');
+      
+      // Hide the Add to Cart button
+      this.style.display = 'none';
+      
+      // Show the quantity selector
+      const quantitySelector = card.querySelector('.quantity-selector');
+      quantitySelector.classList.add('active');
+      
+      // Set up increase/decrease quantity buttons
+      const decreaseBtn = card.querySelector('.decrease-btn');
+      const increaseBtn = card.querySelector('.increase-btn');
+      const quantityInput = card.querySelector('.quantity-input');
+      
+      decreaseBtn.addEventListener('click', function() {
+        let currentValue = parseInt(quantityInput.value);
+        if (currentValue > 1) {
+          quantityInput.value = currentValue - 1;
+          // Update confirmation text
+          card.querySelector('.qty-confirm').textContent = currentValue - 1;
+        }
+      });
+      
+      increaseBtn.addEventListener('click', function() {
+        let currentValue = parseInt(quantityInput.value);
+        if (currentValue < 10) {
+          quantityInput.value = currentValue + 1;
+          // Update confirmation text
+          card.querySelector('.qty-confirm').textContent = currentValue + 1;
+        }
+      });
+      
+      // Listen for input changes
+      quantityInput.addEventListener('change', function() {
+        // Update confirmation text
+        card.querySelector('.qty-confirm').textContent = this.value;
+      });
+      
+      // Show confirmation buttons after a short delay
+      setTimeout(() => {
+        // Hide quantity selector
+        quantitySelector.classList.remove('active');
+        
+        // Show confirmation prompt
+        const confirmationPrompt = card.querySelector('.confirmation-prompt');
+        confirmationPrompt.classList.add('active');
+        
+        // Set up confirm and cancel buttons
+        const confirmBtn = card.querySelector('.confirm-btn');
+        const cancelBtn = card.querySelector('.cancel-btn');
+        
+        confirmBtn.addEventListener('click', function() {
+          const productName = button.getAttribute('data-product');
+          const price = button.getAttribute('data-price');
+          const quantity = quantityInput.value;
+          
+          // You can customize this part to fit your cart implementation
+          alert(`Added ${quantity} ${productName}(s) to your cart!`);
+          
+          // Reset UI
+          confirmationPrompt.classList.remove('active');
+          button.style.display = 'inline-block';
+        });
+        
+        cancelBtn.addEventListener('click', function() {
+          // Reset UI
+          confirmationPrompt.classList.remove('active');
+          button.style.display = 'inline-block';
+        });
+      }, 5000);
     });
-  }
+  });
+;
