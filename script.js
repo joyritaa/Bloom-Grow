@@ -429,7 +429,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const quantity = quantityInput.value;
           
           // You can customize this part to fit your cart implementation
-          alert(`Added ${quantity} ${productName}(s) to your cart!`);
+          alert(` Great Choice!! Added ${quantity} ${productName}(s) to your cart!`);
           
           // Reset UI
           confirmationPrompt.classList.remove('active');
@@ -480,6 +480,11 @@ if (filterBtns.length > 0) {
     });
   });
 }
+
+
+
+
+
 
 
 
