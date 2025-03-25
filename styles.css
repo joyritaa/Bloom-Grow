@@ -813,3 +813,63 @@ canvas {
   display: block;
   background-color:  #f4f1eb;
 }
+
+/* Loading Spinner */
+.loading-spinner {
+  display: none;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid var(--primary-green);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* Cart Icon */
+.cart-icon {
+  position: relative;
+  font-size: 24px;
+  color: var(--primary-green);
+  cursor: pointer;
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: red;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+/* Highlight Active Tab */
+.nav-links a.active {
+  color: var(--primary-green);
+  font-weight: bold;
+}
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary-green);
+  bottom: -5px;
+  left: 0;
+}

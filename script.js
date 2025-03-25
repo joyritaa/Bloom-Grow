@@ -366,8 +366,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //add to cart interaction//
 
-  const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-      
   // Add event listener to each button
   addToCartButtons.forEach(button => {
     button.addEventListener('click', function(e) {
@@ -447,3 +445,68 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 ;
+
+
+
+
+// Get filter buttons and plant cards
+const filterBtns = document.querySelectorAll('.filter-btn');
+const plantCards = document.querySelectorAll('.plant-card');
+const spinner = document.querySelector('.loading-spinner'); // Reference to the spinner
+
+if (filterBtns.length > 0) {
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+
+      const filter = this.getAttribute('data-filter');
+
+      // Show spinner before filtering
+      spinner.style.display = 'block';
+
+      setTimeout(() => {
+        plantCards.forEach(card => {
+          if (filter === 'all' || card.classList.contains(filter)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        // Hide spinner after filtering
+        spinner.style.display = 'none';
+      }, 1000); // Simulate loading delay
+    });
+  });
+}
+
+
+
+
+const cartCount = document.querySelector('.cart-count');
+let cartItems = 0; // Store number of items
+
+// Find all "Add to Cart" buttons
+const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+
+addToCartButtons.forEach(button => {
+  button.addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    cartItems++; // Increase item count
+    cartCount.textContent = cartItems; // Update counter
+    cartCount.style.display = 'flex'; // Ensure it's visible
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  navLinks.forEach(link => {
+    if (link.href === window.location.href) {
+      link.classList.add('active');
+    }
+  });
+});
